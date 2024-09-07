@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["./src/*"],
+      "_tabs/*": ["./src/lib/tabs/*", "./src/components/tabs/*"]
+    }
+  },
+  "extends": "astro/tsconfigs/base",
+  "exclude": ["dist", "public", "node_modules", ".vscode"],
+  "include": [
+    "src/*",
+    "src/**/*.ts",
+    "src/**/*.astro",
+    "src/*.ts",
+    "src/**/*.module.scss",
+    "src/**/*.tsx"
+  ]
+}

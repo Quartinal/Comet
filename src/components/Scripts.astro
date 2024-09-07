@@ -1,0 +1,17 @@
+<script is:inline src="/baremux/index.js" defer></script>
+<script is:inline src="/ultraviolet/uv.bundle.js"></script>
+<script is:inline src="/ultraviolet/uv.config.js"></script>
+<script is:inline src="/scramjet/scramjet.codecs.js"></script>
+<script is:inline src="/scramjet/scramjet.config.js"></script>
+<script is:inline src="/meteor/meteor.codecs.js"></script>
+<script is:inline src="/meteor/meteor.config.js"></script>
+<script is:inline src="/meteor/meteor.bundle.js"></script>
+
+<script is:inline src="/sw.js" defer></script>
+
+<script>
+    import { InitBrowser } from "~/lib/browser";
+    import { registerSW } from "~/lib/registerSW";
+
+    window.onload = () => (InitBrowser(), registerSW());
+</script>

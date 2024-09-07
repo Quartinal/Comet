@@ -1,0 +1,39 @@
+---
+import Scripts from "~/components/Scripts.astro";
+import BrowseSection from "~/components/BrowseSection.astro";
+import Navbar from "~/components/Navbar.astro";
+
+import "~/styles/index.scss";
+import "@fontsource/schibsted-grotesk/500.css";
+import "@fontsource/montserrat/500.css";
+---
+
+<Scripts />
+
+<script>
+    import { Controls } from "~/lib/frameControls";
+
+    const controls = new Controls(),
+        iframe = document.querySelectorAll('iframe')[0];
+
+    const openCloaked = document.getElementsByClassName('ab')[0] as HTMLDivElement,
+        fullscreen = document.getElementsByClassName('fs')[0] as HTMLDivElement;
+
+    openCloaked.onclick = () => {
+        if (localStorage.getItem('open-in-new')) {
+            top.open(iframe.contentWindow.location.href, '_blank');
+        }
+    };
+
+    fullscreen.onclick = () => {
+        controls.fullscreen(iframe);
+    };
+</script>
+
+<body data-bd-loaded="true">
+    <div id="row-layout-above">
+        <BrowseSection />
+    </div>
+
+    <Navbar />
+</body>

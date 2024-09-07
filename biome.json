@@ -1,0 +1,35 @@
+{
+  "$schema": "node_modules/@biomejs/biome/configuration_schema.json",
+  "organizeImports": { "enabled": true },
+  "files": {
+    "ignore": [
+      "node_modules/**",
+      "dist/**",
+      "public/**",
+      "Dockerfile",
+      "*.md",
+      "package.json",
+      "pnpm-lock.yaml",
+      "update-rammerhead.sh",
+      "src/lib/tabs/**",
+      "*.tsx"
+    ]
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true
+    }
+  },
+  "formatter": {
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineEnding": "lf"
+  },
+  "javascript": {
+    "formatter": {
+      "enabled": true,
+      "arrowParentheses": "asNeeded"
+    }
+  }
+}

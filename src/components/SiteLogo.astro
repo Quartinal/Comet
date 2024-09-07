@@ -1,0 +1,8 @@
+---
+import { Logo } from "~/lib/logoDecode";
+import "~/styles/SiteLogo.scss";
+---
+
+<a href="/">
+    <div set:html={new Logo().decode()}></div>
+</a>
