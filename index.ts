@@ -20,7 +20,7 @@ import terminalLink from "terminal-link";
 
 if (!existsSync("dist")) build({});
 
-const PORT = process.env.PORT || 8080;
+const PORT = 8080;
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 

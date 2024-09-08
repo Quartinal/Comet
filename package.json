@@ -10,7 +10,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "remove-types": "node remove-types.js",
-    "postinstall": "npm run remove-types"
+    "postinstall": "pnpm run remove-types"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.3",
@@ -54,10 +54,5 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.8.3"
-  },
-  "overrides": {
-    "vite": {
-      "rollup": "npm:@rollup/wasm-node@4.9.5"
-    }
   }
 }
