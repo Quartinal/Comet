@@ -1,6 +1,9 @@
 # build output
 dist/
 
+# vscode settings
+.vscode/settings.json
+
 # generated types
 .astro/
 
@@ -26,3 +29,10 @@ pnpm-debug.log*
 
 # compiled typeless file
 index.js
+
+# copied production toml config
+config.toml
+
+# cloned workerware directory in the root, not in public
+workerware/
+!public/workerware/

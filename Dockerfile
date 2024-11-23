@@ -2,19 +2,12 @@ FROM node:bookworm
 
 WORKDIR /app
 
-COPY ["package.json", "./"]
+COPY . .
 
 RUN npm i -g pnpm && pnpm i
 
-WORKDIR /app/node_modules/rammerhead
-
-# to satisfy rammerhead
-RUN mkdir public && npm i --save-dev dotenv-flow && npm run build
-
-WORKDIR /app
-
 COPY . .
 
-CMD chmod +x index.ts && ./index.ts
+CMD chmod +x index.ts && ./index.ts --reverse-proxy=false
 
-EXPOSE 5000
+EXPOSE 8080

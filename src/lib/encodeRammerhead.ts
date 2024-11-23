@@ -1,14 +1,14 @@
-// ! Credits to Metallic for this typed Rammerhead function!
+import { storage } from "./localStorage";
 /**
  * properly encodes a specified url to a rammerhead url
- * @param baseUrl the base url or url to encode
+ * @param url the base url or url to encode
  */
-export function encodeRammerhead(baseUrl: any) {
+export async function encodeRammerhead(url: string): Promise<string> {
   const mod = (n: any, m: any) => ((n % m) + m) % m;
   const baseDictionary =
     "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz~-";
   const shuffledIndicator = "_rhs";
-  const generateDictionary = function () {
+  const generateDictionary = () => {
     let str = "";
     const split = baseDictionary.split("");
     while (split.length > 0) {
@@ -17,7 +17,7 @@ export function encodeRammerhead(baseUrl: any) {
     return str;
   };
   interface StrShuffler {
-    dictionary: any;
+    dictionary: string;
   }
   class StrShuffler {
     constructor(dictionary = generateDictionary()) {
@@ -76,10 +76,10 @@ export function encodeRammerhead(baseUrl: any) {
     request.open("GET", url, true);
     request.send();
 
-    request.onerror = function () {
+    request.onerror = () => {
       if (!shush) console.log("Cannot communicate with the server");
     };
-    request.onload = function () {
+    request.onload = () => {
       if (request.status === 200) {
         callback(request.responseText);
       } else {
@@ -97,7 +97,7 @@ export function encodeRammerhead(baseUrl: any) {
       get("/newsession", callback);
     },
     sessionexists(id: any, callback: any) {
-      get("/sessionexists?id=" + encodeURIComponent(id), function (res: any) {
+      get("/sessionexists?id=" + encodeURIComponent(id), (res: any) => {
         if (res === "exists") return callback(true);
         if (res === "not found") return callback(false);
         console.log("unexpected response from server. received" + res);
@@ -105,7 +105,7 @@ export function encodeRammerhead(baseUrl: any) {
     },
     shuffleDict(id: any, callback: any) {
       console.log("Shuffling", id);
-      get("/api/shuffleDict?id=" + encodeURIComponent(id), function (res: any) {
+      get("/api/shuffleDict?id=" + encodeURIComponent(id), (res: any) => {
         callback(JSON.parse(res));
       });
     },
@@ -114,7 +114,7 @@ export function encodeRammerhead(baseUrl: any) {
   var localStorageKeyDefault = "rammerhead_default_sessionid";
   var sessionIdsStore = {
     get() {
-      var rawData = localStorage.getItem(localStorageKey);
+      var rawData = storage.get(localStorageKey);
       if (!rawData) return [];
       try {
         var data = JSON.parse(rawData);
@@ -126,21 +126,19 @@ export function encodeRammerhead(baseUrl: any) {
     },
     set(data: any) {
       if (!data || !Array.isArray(data)) throw new TypeError("must be array");
-      localStorage.setItem(localStorageKey, JSON.stringify(data));
+      storage.set(localStorageKey, JSON.stringify(data));
     },
     getDefault() {
-      var sessionId = localStorage.getItem(localStorageKeyDefault);
+      var sessionId = storage.get(localStorageKeyDefault);
       if (sessionId) {
         var data = sessionIdsStore.get();
-        data.filter(function (e) {
-          return e.id === sessionId;
-        });
+        data.filter(e => e.id === sessionId);
         if (data.length) return data[0];
       }
       return null;
     },
     setDefault(id: any) {
-      localStorage.setItem(localStorageKeyDefault, id);
+      storage.set(localStorageKeyDefault, id);
     },
   };
   function addSession(id: any) {
@@ -150,13 +148,13 @@ export function encodeRammerhead(baseUrl: any) {
   }
   function getSessionId() {
     return new Promise(resolve => {
-      var id = localStorage.getItem("session-string");
-      api.sessionexists(id, function (value: any) {
+      var id = storage.get("session-string");
+      api.sessionexists(id, (value: any) => {
         if (!value) {
           console.log("Session validation failed");
-          api.newsession(function (id: any) {
+          api.newsession((id: any) => {
             addSession(id);
-            localStorage.setItem("session-string", id);
+            storage.set("session-string", id);
             console.log(id);
             console.log("^ new id");
             resolve(id);
@@ -171,9 +169,9 @@ export function encodeRammerhead(baseUrl: any) {
 
   return getSessionId().then(id => {
     return new Promise(resolve => {
-      api.shuffleDict(id, function (shuffleDict: any) {
+      api.shuffleDict(id, (shuffleDict: any) => {
         var shuffler = new StrShuffler(shuffleDict);
-        ProxyHref = "/" + id + "/" + shuffler.shuffle(baseUrl);
+        ProxyHref = "/" + id + "/" + shuffler.shuffle(url);
         resolve(ProxyHref);
       });
     });

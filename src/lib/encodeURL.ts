@@ -4,19 +4,6 @@ import type { Config as MeteorConfig } from "meteorproxy";
 declare global {
   var __uv$config: Required<UltravioletConfig>;
 
-  var __scramjet$config: {
-    prefix: `/${string}/`;
-    config: `/${string}.js`;
-    bundle: `/${string}.js`;
-    worker: `/${string}.js`;
-    client: `/${string}.js`;
-    codecs: `/${string}.js`;
-    codec: {
-      encode: (url: string) => string;
-      decode: (url: string) => string;
-    };
-  };
-
   var $meteor_config: Required<MeteorConfig>;
 }
 
@@ -27,7 +14,7 @@ export class Proxies {
    * @param url the url to encode
    */
   encodeUltraviolet(url: string) {
-    return "/ult/ultraviolet/" + __uv$config.encodeUrl(url);
+    return __uv$config.prefix + __uv$config.encodeUrl(url);
   }
 
   /**
@@ -35,7 +22,8 @@ export class Proxies {
    * @param url the url to encode
    */
   encodeScramjet(url: string) {
-    return "/scram/scramjet/" + __scramjet$config.codec.encode(url);
+    //@ts-expect-error
+    return window.scramjet.encodeUrl(url);
   }
 
   /**
@@ -43,6 +31,6 @@ export class Proxies {
    * @param url the url to encode
    */
   encodeMeteor(url: string) {
-    return "/met/meteor/" + $meteor_config.codec.encode(url);
+    return $meteor_config.prefix + $meteor_config.codec.encode(url);
   }
 }

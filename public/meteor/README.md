@@ -1,1 +1,0 @@
-To be transparent since only a couple repositories are remotely using Meteor on GitHub right now, it was best just to use JSDelivr to get the bundled source code and then copy it here.

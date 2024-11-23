@@ -1,8 +1,9 @@
 <script is:inline src="/baremux/index.js" defer></script>
 <script is:inline src="/ultraviolet/uv.bundle.js"></script>
 <script is:inline src="/ultraviolet/uv.config.js"></script>
-<script is:inline src="/scramjet/scramjet.codecs.js"></script>
-<script is:inline src="/scramjet/scramjet.config.js"></script>
+<script is:inline src="/scramjet/scramjet.worker.js"></script>
+<script is:inline src="/scramjet/scramjet.shared.js"></script>
+<script is:inline src="/scramjet/scramjet.controller.js"></script>
 <script is:inline src="/meteor/meteor.codecs.js"></script>
 <script is:inline src="/meteor/meteor.config.js"></script>
 <script is:inline src="/meteor/meteor.bundle.js"></script>
@@ -10,8 +11,26 @@
 <script is:inline src="/sw.js" defer></script>
 
 <script>
-    import { InitBrowser } from "~/lib/browser";
-    import { registerSW } from "~/lib/registerSW";
+  import { InitBrowser } from "~/lib/browser";
+  import { registerSW } from "~/lib/registerSW";
 
-    window.onload = () => (InitBrowser(), registerSW());
+  const input = document.querySelector<HTMLInputElement>(".url-input")!;
+  const iframe = document.querySelector<HTMLIFrameElement>("iframe")!;
+
+  //@ts-expect-error
+  window.scramjet = new ScramjetController({
+    prefix: "/scram/scramjet/",
+    files: {
+      wasm: "/scramjet/scramjet.wasm.js",
+      worker: "/scramjet/scramjet.worker.js",
+      client: "/scramjet/scramjet.client.js",
+      shared: "/scramjet/scramjet.shared.js",
+      sync: "/scramjet/scramjet.sync.js",
+    },
+  });
+  //@ts-expect-error
+  window.scramjet.init("/sw.js");
+
+  window.onload = () => (InitBrowser(iframe, input), registerSW());
+  document.title = "Comet";
 </script>

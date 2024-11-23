@@ -5,21 +5,33 @@
     "ignore": [
       "node_modules/**",
       "dist/**",
-      "public/**",
+      "public/**/*.json",
       "Dockerfile",
       "*.md",
       "package.json",
       "pnpm-lock.yaml",
-      "update-rammerhead.sh",
-      "src/lib/tabs/**",
-      "*.tsx"
+      "*.astro",
+      "index.js"
     ]
   },
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true
-    }
+      "recommended": true,
+      "style": {
+        "useNodejsImportProtocol": "warn",
+        "useTemplate": "off",
+        "useSelfClosingElements": "off",
+        "noNonNullAssertion": "off"
+      },
+      "suspicious": {
+        "noExplicitAny": "off"
+      },
+      "complexity": {
+        "noStaticOnlyClass": "off"
+      }
+    },
+    "ignore": ["public/sw.js", "src/lib/Tab.ts", "src/lib/encodeRammerhead.ts"]
   },
   "formatter": {
     "indentStyle": "space",

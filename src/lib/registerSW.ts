@@ -1,10 +1,34 @@
-// @ts-nocheck
+//@ts-nocheck
 import { storage } from "./localStorage.ts";
-import { BareMuxConnection } from "@mercuryworkshop/bare-mux";
+import type * as _BareMux from "@mercuryworkshop/bare-mux";
+
+declare global {
+  var BareMux: typeof _BareMux;
+}
+
+// just in case
+export const wispUrl =
+  (location.protocol === "https:" ? "wss" : "ws") +
+  "://" +
+  origin.replace(
+    (location.protocol === "https:" ? "https" : "http") + "://",
+    "",
+  ) +
+  "/wisp/";
+
+export const bareUrl =
+  (location.protocol === "https:" ? "https" : "http") +
+  "://" +
+  origin.replace(
+    (location.protocol === "https:" ? "https" : "http") + "://",
+    "",
+  ) +
+  "/bare/";
 
 export async function registerSW() {
   const url = new URL(String(location)).searchParams;
 
+  //@ts-expect-error
   await (setupBareMux() &&
     (url.get("adblocker") && url.get("adblocker") === "on"
       ? navigator.serviceWorker
@@ -20,27 +44,11 @@ export async function registerSW() {
 }
 
 async function setupBareMux() {
-  const wispUrl =
-    (location.protocol === "https:" ? "wss" : "ws") +
-    "://" +
-    origin.replace(
-      (location.protocol === "https:" ? "https" : "http") + "://",
-      "",
-    ) +
-    "/wisp/";
+  const transport = ((await storage.get("transportation")) || "epoxy") as
+    | "epoxy"
+    | "libcurl";
 
-  const bareUrl =
-    (location.protocol === "https:" ? "https" : "http") +
-    "://" +
-    origin.replace(
-      (location.protocol === "https:" ? "https" : "http") + "://",
-      "",
-    ) +
-    "/bare/";
-
-  const transport = (await storage.get("transport")) || "epoxy";
-
-  const connection = new BareMuxConnection("/baremux/worker.js");
+  const connection = new BareMux.BareMuxConnection("/baremux/worker.js");
 
   await connection.setTransport(
     transport === "epoxy"

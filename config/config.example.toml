@@ -1,0 +1,7 @@
+[env]
+env_url = ".env.example"
+
+[db_config]
+name = "comet_db"
+username = "comet"
+password = "comet"

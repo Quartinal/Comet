@@ -14,7 +14,10 @@ export class Controls {
 
   /** reloads */
   reload(selector: HTMLIFrameElement) {
-    selector.contentWindow.location.href = selector.contentWindow.location.href;
+    if (selector.src === "about:blank") {
+      window.location.reload();
+    }
+    selector.contentWindow.location.reload();
   }
 
   /**
@@ -22,7 +25,7 @@ export class Controls {
    * @param url the url to navigate to
    */
   go(url: string, selector: HTMLIFrameElement) {
-    selector.contentWindow.location.href = url;
+    selector.src = url;
   }
 
   /**
@@ -30,7 +33,7 @@ export class Controls {
    * @param url the url to push the state to
    */
   pushState(url: string, selector: HTMLIFrameElement) {
-    selector.contentWindow.history.pushState(null, null, url);
+    selector.contentWindow.history.pushState(null, "", url);
   }
 
   /**
